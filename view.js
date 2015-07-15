@@ -4,8 +4,8 @@ function Game(canv) {
 	// Game must be given a canvas to draw on
 	this.canvas = canv;
 	
-	this.scale = 100; // 1 AU = 100 pixels
-	this.scale2 = 0.002; // 1 km = 0.002 px
+	this.scale = 50; // 1 AU = 50 pixels
+	this.scale2 = 0.001; // 1 km = 0.001 px
 	
 	// Generate new solar system
 	this.system = new SolarSystem();
@@ -35,6 +35,11 @@ Game.prototype.drawSystem = function() {
 	
 	for (i = 0; i < this.system.planets.length; i++) {
 		// draw path
+		if (this.system.planets[i].name == "Earth")
+			ctx.strokeStyle="blue";
+		else
+			ctx.strokeStyle="black";
+		
 		ctx.beginPath();
 		ctx.arc(320,240,this.scale*this.system.planets[i].sdist,0,2*Math.PI)
 		ctx.closePath();
@@ -49,12 +54,16 @@ Game.prototype.drawSystem = function() {
 		ctx.beginPath();
 		ctx.arc(x,y,this.scale2 * this.system.planets[i].radius,0,2*Math.PI);
 		ctx.closePath();
-		if (this.system.planets[i].name == "Earth")
-			ctx.fillStyle="blue";
-		else
-			ctx.fillStyle="black";
+		if (this.system.planets[i].type == "Rocky") {
+			if (this.system.planets[i].name == "Earth")
+				ctx.fillStyle="blue";
+			else
+				ctx.fillStyle="black";
+		} else
+			ctx.fillStyle="rgba(0, 0, 0, 0.3)";
 		ctx.fill();
 		
+		ctx.fillStyle="black";
 		ctx.fillText(this.system.planets[i].name, x + this.scale2 * this.system.planets[i].radius, y + this.scale2 * this.system.planets[i].radius);
 	}
 }
@@ -79,11 +88,17 @@ function onClick(event)
 } 
 
 function onKeyDown(event) {
-	if (event.keyCode == 32) {
+	if (event.keyCode == 32) { // SPACE
 		if (time_rate == 1)
 			time_rate = 0;
 		else
 			time_rate = 1;
+	}
+	else if (event.keyCode == 90) { // Z
+		game.scale = game.scale / 1.5;
+	}
+	else if (event.keyCode == 88) { // X
+		game.scale = game.scale * 1.5;
 	}
 }
 

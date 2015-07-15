@@ -5,8 +5,11 @@ function SolarSystem() {
 	var pfact = new PlanetFactory();
 	this.planets = new Array();
 	
+	var numRocky = Math.floor(Math.random() * 3 + 3);
+	var numTotal = Math.floor(Math.random() * 5 + 1) + numRocky;
+	console.log(numTotal);
 	// Add planets to solar system
-		while (this.planets.length < 4)
+		while (this.planets.length < numRocky)
 		{
 			testPlanet = pfact.getRockyPlanet();
 			approved = true;
@@ -19,11 +22,25 @@ function SolarSystem() {
 				this.planets.push(testPlanet);
 		}
 		
+		while (this.planets.length < numTotal)
+		{
+			testPlanet = pfact.getGasPlanet();
+			approved = true;
+			for (i = 0; i < this.planets.length; i++)
+			{
+				if (Math.abs(this.planets[i].sdist - testPlanet.sdist) < 0.5)
+					approved = false;
+			}
+			if (approved)
+				this.planets.push(testPlanet);
+		}
+		
 		this.planets.push(pfact.getEarth());
 }
 
 // A constructor for defining new planets
 function Planet(options) {
+	this.type = options.type;				// "Rocky" or "Gas"
 	this.name = options.name;				// Arbitrary
 	
 	this.sdist = options.sdist;			// Distance to sun, in AU
@@ -48,6 +65,7 @@ function PlanetFactory() {}
 
 PlanetFactory.prototype.getEarth = function() {
 	return new Planet( {
+		type: "Rocky",
 		name: "Earth",
 		sdist: 1, // 1 AU
 		speriod: 100, // 1 centicycle
@@ -59,6 +77,7 @@ PlanetFactory.prototype.getEarth = function() {
 
 PlanetFactory.prototype.getRockyPlanet = function() {
 		return new Planet( {
+			type: "Rocky",
 			name: getRandomName(),
 			// 0.2 to 4
 			sdist: Math.round(( Math.random() * (1.8) ) * 10 + 4)/10,
@@ -71,11 +90,26 @@ PlanetFactory.prototype.getRockyPlanet = function() {
 		} );
 }
 
+PlanetFactory.prototype.getGasPlanet = function() {
+		return new Planet( {
+			type: "Gas",
+			name: getRandomName(),
+			// 3 to 30 AU
+			sdist: Math.round(( Math.random() * (27) ) * 10 + 3)/10,
+			// 100 - 2000 centicycle periods
+			speriod: Math.floor( (Math.random() * 1900) + 100),
+			sphi: Math.random() * (2 * Math.PI),
+			// 9000 - 80000 km
+			radius: Math.round(( Math.random() * 71000 )) + 9000,
+			moons: Math.floor(Math.random() * 15)
+		} );
+}
+
 // Helper functions relevant only to planet.js
 
 getRandomName = function() {
 	var numsyll = Math.floor(Math.random() * 6)+1;
-	var ransyll = [ "ka", "chi", "tzu", "pla", "ke", "n", "m", "t", "ha", "na", "nu", "ne", "tr'y", "tu", "re", "ch", "la", "nur" ];
+	var ransyll = [ "in", "hun", "loe" ,"de", "d", "ven", "ti", "gro", "j", "", "ka", "chi", "tzu", "pla", "ke", "n", "m", "t", "ha", "na", "nu", "ne", "tr'y", "tu", "re", "ch", "la", "nur" ];
 	var name = "";
 	
 	for (i = 0; i < numsyll; i++) {
