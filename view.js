@@ -4,6 +4,9 @@ function Game(canv) {
 	// Game must be given a canvas to draw on
 	this.canvas = canv;
 	
+	this.scale = 100; // 1 AU = 100 pixels
+	this.scale2 = 0.002; // 1 km = 0.002 px
+	
 	// Generate new solar system
 	this.system = new SolarSystem();
 }
@@ -19,8 +22,6 @@ Game.prototype.drawPlanetInfo = function() {
 
 Game.prototype.drawSystem = function() {
 	var ctx = this.canvas.getContext('2d');
-	var scale = 100; // 1 AU = 100 pixels
-	var scale2 = 0.002; // 1 km = 0.002 px
 	
 	ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	
@@ -35,18 +36,18 @@ Game.prototype.drawSystem = function() {
 	for (i = 0; i < this.system.planets.length; i++) {
 		// draw path
 		ctx.beginPath();
-		ctx.arc(320,240,scale*this.system.planets[i].sdist,0,2*Math.PI)
+		ctx.arc(320,240,this.scale*this.system.planets[i].sdist,0,2*Math.PI)
 		ctx.closePath();
 		ctx.stroke();
 		
 		var x = Math.sin((time/this.system.planets[i].speriod) * (2 * Math.PI) + this.system.planets[i].sphi);
 		var y = Math.cos((time/this.system.planets[i].speriod) * (2 * Math.PI) + this.system.planets[i].sphi);
-		x = (x * this.system.planets[i].sdist * scale) + 320;
-		y = (y * this.system.planets[i].sdist * scale) + 240;
+		x = (x * this.system.planets[i].sdist * this.scale) + 320;
+		y = (y * this.system.planets[i].sdist * this.scale) + 240;
 		
 		// draw planet
 		ctx.beginPath();
-		ctx.arc(x,y,scale2 * this.system.planets[i].radius,0,2*Math.PI);
+		ctx.arc(x,y,this.scale2 * this.system.planets[i].radius,0,2*Math.PI);
 		ctx.closePath();
 		if (this.system.planets[i].name == "Earth")
 			ctx.fillStyle="blue";
@@ -54,9 +55,29 @@ Game.prototype.drawSystem = function() {
 			ctx.fillStyle="black";
 		ctx.fill();
 		
-		ctx.fillText(this.system.planets[i].name, x + scale2 * this.system.planets[i].radius, y + scale2 * this.system.planets[i].radius);
+		ctx.fillText(this.system.planets[i].name, x + this.scale2 * this.system.planets[i].radius, y + this.scale2 * this.system.planets[i].radius);
 	}
 }
+
+Game.prototype.onClick = function (event)
+{
+  var x = event.pageX - gamecanvas.offsetLeft;
+  var y = event.pageY - gamecanvas.offsetTop;
+
+  for (i = 0; i < game.system.planets.length; i++) {
+		var xpla = Math.sin((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
+		var ypla = Math.cos((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
+		xpla = (xpla * game.system.planets[i].sdist * game.scale) + 320;
+		ypla = (ypla * game.system.planets[i].sdist * game.scale) + 240;
+		rpla = game.scale2 * game.system.planets[i].radius * 2;
+		
+		if ((Math.pow(x - xpla,2) + Math.pow(y - ypla,2)) <= rpla) {
+			alert(game.system.planets[i].getKeyStats());
+			break;
+		}
+		console.log(rpla)
+	}
+} 
 
 function Loop() {
 	time = time + 1;
@@ -64,6 +85,9 @@ function Loop() {
 	setTimeout(Loop, 500);
 }
 
-var game = new Game( document.getElementById('gamecanvas') );
+var gamecanvas = document.getElementById('gamecanvas');
+var game = new Game( gamecanvas );
 var time = 0;
+
+gamecanvas.addEventListener("mousedown", game.onClick, false);
 Loop();
