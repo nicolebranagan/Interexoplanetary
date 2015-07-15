@@ -57,7 +57,9 @@ Game.prototype.drawSystem = function() {
 		if (this.system.planets[i].type == "Rocky") {
 			if (this.system.planets[i].name == "Earth")
 				ctx.fillStyle="blue";
-			else
+			else if (this.system.planets[i].habitable)
+				ctx.fillStyle="green";
+		  else
 				ctx.fillStyle="black";
 		} else
 			ctx.fillStyle="rgba(0, 0, 0, 0.3)";

@@ -7,7 +7,7 @@ function SolarSystem() {
 	
 	var numRocky = Math.floor(Math.random() * 3 + 3);
 	var numTotal = Math.floor(Math.random() * 5 + 1) + numRocky;
-	console.log(numTotal);
+	
 	// Add planets to solar system
 		while (this.planets.length < numRocky)
 		{
@@ -50,11 +50,13 @@ function Planet(options) {
 	this.radius = options.radius;		// Measured in kilometers
 	
 	this.moons = options.moons;			// Number of moons
+	
+	this.habitable = options.habitable;
 }
 
 Planet.prototype.getKeyStats = function() {
-	return ("Name: " + this.name +
-		", Dist: " + this.sdist + "AU" +
+	return (this.type + " Planet " + this.name +
+		": Dist: " + this.sdist + "AU" +
 		", Period: " + this.speriod + " centicycle" +
 		", Rad: " + this.radius + "km" +
 		", Moons: " + this.moons);
@@ -71,22 +73,27 @@ PlanetFactory.prototype.getEarth = function() {
 		speriod: 100, // 1 centicycle
 		sphi: 0,			// No phase angle
 		radius: 6370, // 6370 km
-		moons: 1 // Earth has one moon
+		moons: 1, // Earth has one moon
+		habitable: true // for now
 	} );
 }
 
 PlanetFactory.prototype.getRockyPlanet = function() {
+		// Period is a function of distance from sun, Kepler
+		var dist =  Math.round(( Math.random() * (1.8) ) * 10 + 4)/10;
+		var period = Math.round(Math.sqrt(Math.pow(dist,3)) * 100);
+		var habit = ((dist < 1.67) && (dist > 0.95)) // Habitable zone
 		return new Planet( {
 			type: "Rocky",
 			name: getRandomName(),
 			// 0.2 to 4
-			sdist: Math.round(( Math.random() * (1.8) ) * 10 + 4)/10,
-			// 10 - 200 centicycle periods
-			speriod: Math.floor( (Math.random() * 190) + 10),
+			sdist: dist,
+			speriod: period,
 			sphi: Math.random() * (2 * Math.PI),
 			// 2000 - 10000 km
 			radius: Math.round(( Math.random() * 8000 )) + 2000,
-			moons: Math.floor(Math.random() * 4)
+			moons: Math.floor(Math.random() * 4),
+			habitable: habit
 		} );
 }
 
@@ -101,7 +108,8 @@ PlanetFactory.prototype.getGasPlanet = function() {
 			sphi: Math.random() * (2 * Math.PI),
 			// 9000 - 80000 km
 			radius: Math.round(( Math.random() * 71000 )) + 9000,
-			moons: Math.floor(Math.random() * 15)
+			moons: Math.floor(Math.random() * 15),
+			habit: false // Don't live on a gas giant, kids
 		} );
 }
 
@@ -109,7 +117,7 @@ PlanetFactory.prototype.getGasPlanet = function() {
 
 getRandomName = function() {
 	var numsyll = Math.floor(Math.random() * 6)+1;
-	var ransyll = [ "in", "hun", "loe" ,"de", "d", "ven", "ti", "gro", "j", "", "ka", "chi", "tzu", "pla", "ke", "n", "m", "t", "ha", "na", "nu", "ne", "tr'y", "tu", "re", "ch", "la", "nur" ];
+	var ransyll = [ "in", "hun", "loe" ,"de", "d", "ven", "ti", "gro", "j", "", "'", "ka", "chi", "tzu", "pla", "ke", "n", "m", "vy", "ha", "na", "nu", "ne", "tr'y", "tu", "re", "ch", "la", "nur" ];
 	var name = "";
 	
 	for (i = 0; i < numsyll; i++) {
