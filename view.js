@@ -59,7 +59,7 @@ Game.prototype.drawSystem = function() {
 	}
 }
 
-Game.prototype.onClick = function (event)
+function onClick(event)
 {
   var x = event.pageX - gamecanvas.offsetLeft;
   var y = event.pageY - gamecanvas.offsetTop;
@@ -75,12 +75,20 @@ Game.prototype.onClick = function (event)
 			alert(game.system.planets[i].getKeyStats());
 			break;
 		}
-		console.log(rpla)
 	}
 } 
 
+function onKeyDown(event) {
+	if (event.keyCode == 32) {
+		if (time_rate == 1)
+			time_rate = 0;
+		else
+			time_rate = 1;
+	}
+}
+
 function Loop() {
-	time = time + 1;
+	time = time + time_rate;
 	game.drawSystem();
 	setTimeout(Loop, 500);
 }
@@ -88,6 +96,8 @@ function Loop() {
 var gamecanvas = document.getElementById('gamecanvas');
 var game = new Game( gamecanvas );
 var time = 0;
+var time_rate = 1;
 
-gamecanvas.addEventListener("mousedown", game.onClick, false);
+gamecanvas.addEventListener("mousedown", onClick, false);
+window.addEventListener("keydown", onKeyDown, false);
 Loop();
