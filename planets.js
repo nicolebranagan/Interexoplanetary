@@ -5,11 +5,12 @@ function SolarSystem() {
 	var pfact = new PlanetFactory();
 	this.planets = new Array();
 	
-	var numRocky = Math.floor(Math.random() * 3 + 3);
-	var numTotal = Math.floor(Math.random() * 5 + 1) + numRocky;
-	
+	this.numRocky = Math.floor(Math.random() * 3 + 3);
+	this.numGas = Math.floor(Math.random() * 5 + 1);
+	this.numPlanets = this.numRocky + this.numGas;
+	console.log(this.numRocky);
 	// Add planets to solar system
-		while (this.planets.length < numRocky)
+		while (this.planets.length < this.numRocky)
 		{
 			testPlanet = pfact.getRockyPlanet();
 			approved = true;
@@ -22,7 +23,7 @@ function SolarSystem() {
 				this.planets.push(testPlanet);
 		}
 		
-		while (this.planets.length < numTotal)
+		while (this.planets.length < this.numPlanets)
 		{
 			testPlanet = pfact.getGasPlanet();
 			approved = true;

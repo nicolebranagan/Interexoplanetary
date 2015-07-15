@@ -98,9 +98,11 @@ function onKeyDown(event) {
 	}
 	else if (event.keyCode == 90) { // Z
 		game.scale = game.scale / 1.5;
+		game.scale2 = game.scale2 / 1.5;
 	}
 	else if (event.keyCode == 88) { // X
 		game.scale = game.scale * 1.5;
+		game.scale2 = game.scale2 * 1.5;
 	}
 }
 
