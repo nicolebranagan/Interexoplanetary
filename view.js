@@ -6,6 +6,8 @@ function Game(canv) {
 	
 	this.scale = 50; // 1 AU = 50 pixels
 	this.scale2 = 0.001; // 1 km = 0.001 px
+	this.width = 800;
+	this.height = 600;
 	
 	// Generate new solar system
 	this.system = new SolarSystem();
@@ -25,10 +27,8 @@ Game.prototype.drawSystem = function() {
 	
 	ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 	
-	ctx.fillText(time, 10, 20);
-	
 	ctx.beginPath();
-	ctx.arc(320,240,10,0,2*Math.PI);
+	ctx.arc(this.width/2,this.height/2,10,0,2*Math.PI);
 	ctx.closePath();
 	ctx.fillStyle="rgba(255, 255, 0, 1.0)";
 	ctx.fill();
@@ -38,17 +38,17 @@ Game.prototype.drawSystem = function() {
 		if (this.system.planets[i].name == "Earth")
 			ctx.strokeStyle="blue";
 		else
-			ctx.strokeStyle="black";
+			ctx.strokeStyle="white";
 		
 		ctx.beginPath();
-		ctx.arc(320,240,this.scale*this.system.planets[i].sdist,0,2*Math.PI)
+		ctx.arc(this.width/2,this.height/2,this.scale*this.system.planets[i].sdist,0,2*Math.PI)
 		ctx.closePath();
 		ctx.stroke();
 		
 		var x = Math.sin((time/this.system.planets[i].speriod) * (2 * Math.PI) + this.system.planets[i].sphi);
 		var y = Math.cos((time/this.system.planets[i].speriod) * (2 * Math.PI) + this.system.planets[i].sphi);
-		x = (x * this.system.planets[i].sdist * this.scale) + 320;
-		y = (y * this.system.planets[i].sdist * this.scale) + 240;
+		x = (x * this.system.planets[i].sdist * this.scale) + this.width/2;
+		y = (y * this.system.planets[i].sdist * this.scale) + this.height/2;
 		
 		// draw planet
 		ctx.beginPath();
@@ -60,12 +60,12 @@ Game.prototype.drawSystem = function() {
 			else if (this.system.planets[i].habitable)
 				ctx.fillStyle="green";
 		  else
-				ctx.fillStyle="black";
+				ctx.fillStyle="brown";
 		} else
-			ctx.fillStyle="rgba(0, 0, 0, 0.3)";
+			ctx.fillStyle="orange";
 		ctx.fill();
 		
-		ctx.fillStyle="black";
+		ctx.fillStyle="white";
 		ctx.fillText(this.system.planets[i].name, x + this.scale2 * this.system.planets[i].radius, y + this.scale2 * this.system.planets[i].radius);
 	}
 }
@@ -78,8 +78,8 @@ function onClick(event)
   for (i = 0; i < game.system.planets.length; i++) {
 		var xpla = Math.sin((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
 		var ypla = Math.cos((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
-		xpla = (xpla * game.system.planets[i].sdist * game.scale) + 320;
-		ypla = (ypla * game.system.planets[i].sdist * game.scale) + 240;
+		xpla = (xpla * game.system.planets[i].sdist * game.scale) + this.width/2;
+		ypla = (ypla * game.system.planets[i].sdist * game.scale) + this.height/2;
 		rpla = game.scale2 * game.system.planets[i].radius * 2;
 		
 		if ((Math.pow(x - xpla,2) + Math.pow(y - ypla,2)) <= rpla) {
