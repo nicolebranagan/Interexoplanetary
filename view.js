@@ -29,7 +29,7 @@ drawBaseMenu = function() {
 	ctx.fillStyle="black";
 	ctx.font = "15px serif";
 	ctx.fillText("Display star system",15,40);
-	ctx.fillText("Display diagramatic",15,90);
+	ctx.fillText("Display diagrammatic",15,90);
 	ctx.font = "";
 	
 	gamecanvas.addEventListener("mousedown", baseMenuClick, false);

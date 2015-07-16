@@ -115,6 +115,7 @@ function drawSystemKeyDown(event) {
 	}
 	else if (event.keyCode == 8) { // Backspace
 		exitDrawSystem();
+		event.preventDefault();
 	}
 }
 
@@ -122,6 +123,8 @@ function enterDrawSystem() {
 	gamecanvas.addEventListener("mousedown", drawSystemClick, false);
 	window.addEventListener("keydown", drawSystemKeyDown, false);
 	drawSystem();
+	var span = document.getElementById('infospan');
+	span.style.color = '#FFFFFF';
 }
 
 function exitDrawSystem() {
@@ -130,4 +133,7 @@ function exitDrawSystem() {
 	clearTimeout(timeout);
 	
 	drawBaseMenu();
+	
+	var span = document.getElementById('infospan');
+	span.style.color = '#000000';
 }

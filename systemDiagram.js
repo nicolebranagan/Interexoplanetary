@@ -47,6 +47,9 @@ systemDiagram = function() {
 		} else
 			ctx.fillStyle="orange";
 		ctx.fill();
+		
+		ctx.fillStyle="white";
+		ctx.fillText(game.system.planets[i].name,x+12,y);
 	}
 	
 	for (i = 0; i < (count - 1); i++) {
@@ -75,5 +78,6 @@ clickFieldBlank = function(event) {
 function systemDiagramKeyDown(event) {
 	if (event.keyCode == 8) { // Backspace
 		exitSystemDiagram();
+		event.preventDefault();
 	}
 }
