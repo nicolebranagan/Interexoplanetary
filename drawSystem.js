@@ -1,3 +1,5 @@
+var showEarth = true;
+
 drawSystem = function() {
 	time = time + time_rate;
 	
@@ -42,30 +44,32 @@ drawSystem = function() {
 		ctx.fillText(game.system.planets[i].name, x + game.scale2 * game.system.planets[i].radius, y + game.scale2 * game.system.planets[i].radius);
 	}
 	
-	// Draw Earth for comparison
-	var pfact = new PlanetFactory();
-	var earth = pfact.getEarth();
-	ctx.strokeStyle="blue";
-	ctx.beginPath();
-	ctx.arc(game.width/2,game.height/2,game.scale*earth.sdist,0,2*Math.PI)
-	ctx.closePath();
-	ctx.stroke();
+	if (showEarth) {
+		// Draw Earth for comparison
+		var pfact = new PlanetFactory();
+		var earth = pfact.getEarth();
+		ctx.strokeStyle="blue";
+		ctx.beginPath();
+		ctx.arc(game.width/2,game.height/2,game.scale*earth.sdist,0,2*Math.PI)
+		ctx.closePath();
+		ctx.stroke();
+		
+		var x = Math.sin((time/earth.speriod) * (2 * Math.PI));
+		var y = Math.cos((time/earth.speriod) * (2 * Math.PI));
+		x = (x * earth.sdist * game.scale) + game.width/2;
+		y = (y * earth.sdist * game.scale) + game.height/2;
+		
+		// draw planet
+		ctx.beginPath();
+		ctx.arc(x,y,game.scale2 * earth.radius,0,2*Math.PI);
+		ctx.closePath();
+		ctx.fillStyle = "blue";
+		ctx.fill();
+		
+		ctx.fillStyle="white";
+		ctx.fillText(earth.name, x + game.scale2 * earth.radius, y + game.scale2 * earth.radius);
+	}
 	
-	var x = Math.sin((time/earth.speriod) * (2 * Math.PI));
-	var y = Math.cos((time/earth.speriod) * (2 * Math.PI));
-	x = (x * earth.sdist * game.scale) + game.width/2;
-	y = (y * earth.sdist * game.scale) + game.height/2;
-	
-	// draw planet
-	ctx.beginPath();
-	ctx.arc(x,y,game.scale2 * earth.radius,0,2*Math.PI);
-	ctx.closePath();
-	ctx.fillStyle = "blue";
-	ctx.fill();
-	
-	ctx.fillStyle="white";
-	ctx.fillText(earth.name, x + game.scale2 * earth.radius, y + game.scale2 * earth.radius);
-
 	setTimeout(drawSystem, 500);
 }
 
@@ -102,6 +106,9 @@ function drawSystemKeyDown(event) {
 	else if (event.keyCode == 88) { // X
 		game.scale = game.scale * 1.5;
 		game.scale2 = game.scale2 * 1.1;
+	}
+	else if (event.keyCode == 67) { // C
+		showEarth = !showEarth;
 	}
 }
 

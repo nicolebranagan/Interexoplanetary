@@ -27,5 +27,5 @@ var game = new Game( gamecanvas );
 var time = 0;
 var time_rate = 1;
 
-//plotCourse();
+//enterSystemDiagram();
 enterDrawSystem();
