@@ -51,26 +51,12 @@ drawBaseMenu = function() {
 	
 }
 
-function baseMenuClick(event)
-{
+function baseMenuClick(event) {
 	for (i = 0; i < menuObjects.length; i++)
 	menuObjects[i].onClick(event);
 	
 	var x = event.pageX - gamecanvas.offsetLeft;
 	var y = event.pageY - gamecanvas.offsetTop;
-	
-	if ((x > 10) && (x < 160) && (y > 10) && (y < 60))
-	{
-		// Display star system
-		game.canvas.removeEventListener("mousedown", baseMenuClick);
-		enterDrawSystem();
-	}
-	else if ((x > 10) && (x < 160) && (y > 60) && (y < 110))
-	{
-		// Display star system
-		game.canvas.removeEventListener("mousedown", baseMenuClick);
-		enterSystemDiagram();
-	}
 }
 
 var gamecanvas = document.getElementById('gamecanvas');

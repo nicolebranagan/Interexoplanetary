@@ -31,7 +31,7 @@ Button.prototype.onClick = function(event) {
 	var y = event.pageY - gamecanvas.offsetTop;
 	
 	if ((x > this.x) && (x < (this.x + this.w)) && 
-			(y > this.y) && (y < (this.y+this.h))) {
+			(y > this.y) && (y < (this.y + this.h))) {
 		this.clickFunction();
 	}
 }
