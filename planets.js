@@ -36,7 +36,7 @@ function SolarSystem() {
 				this.planets.push(testPlanet);
 		}
 		
-		this.planets.push(pfact.getEarth());
+		this.planets.sort(function(a,b) {return (a.sdist - b.sdist)});
 }
 
 // A constructor for defining new planets
@@ -81,8 +81,8 @@ PlanetFactory.prototype.getEarth = function() {
 
 PlanetFactory.prototype.getRockyPlanet = function() {
 		// Period is a function of distance from sun, Kepler
-		var dist =  Math.round(( Math.random() * (1.8) ) * 10 + 4)/10;
-		var period = Math.round(Math.sqrt(Math.pow(dist,3)) * 100);
+		var dist =  Math.round(( Math.random() * (3.7) + 0.3) * 10 )/10;
+		var period = Math.round(Math.sqrt(Math.pow(dist,3)) * 1000)/10;
 		var habit = ((dist < 1.67) && (dist > 0.95)) // Habitable zone
 		return new Planet( {
 			type: "Rocky",
@@ -99,13 +99,14 @@ PlanetFactory.prototype.getRockyPlanet = function() {
 }
 
 PlanetFactory.prototype.getGasPlanet = function() {
+		var dist =  Math.round( (Math.random() * (28) + 2) * 10 )/10;
+		var period = Math.round(Math.sqrt(Math.pow(dist,3)) * 1000)/10;
 		return new Planet( {
 			type: "Gas",
 			name: getRandomName(),
-			// 3 to 30 AU
-			sdist: Math.round(( Math.random() * (27) ) * 10 + 3)/10,
-			// 100 - 2000 centicycle periods
-			speriod: Math.floor( (Math.random() * 1900) + 100),
+			// 2 to 30 AU
+			sdist: dist,
+			speriod: period,
 			sphi: Math.random() * (2 * Math.PI),
 			// 9000 - 80000 km
 			radius: Math.round(( Math.random() * 71000 )) + 9000,
@@ -118,7 +119,7 @@ PlanetFactory.prototype.getGasPlanet = function() {
 
 getRandomName = function() {
 	var numsyll = Math.floor(Math.random() * 6)+1;
-	var ransyll = [ "in", "hun", "loe" ,"de", "d", "ven", "ti", "gro", "j", "", "'", "ka", "chi", "tzu", "pla", "ke", "n", "m", "vy", "ha", "na", "nu", "ne", "tr'y", "tu", "re", "ch", "la", "nur" ];
+	var ransyll = [ "in", "hun", "loe" ,"de", "d", "ven", "ti", "gro", "j", "'", "ka", "chi", "tzu", "pla", "ke", "n", "m", "vy", "ha", "na", "nu", "ne", "tr", "y", "tu", "re", "ch", "la", "nur" ];
 	var name = "";
 	
 	for (i = 0; i < numsyll; i++) {
@@ -127,4 +128,8 @@ getRandomName = function() {
 	}
 	
 	return name.charAt(0).toUpperCase() + name.slice(1);
+}
+
+comparePlanetsByAU = function(a,b) {
+	return (b.sdist - a.sdist);
 }
