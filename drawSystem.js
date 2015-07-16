@@ -1,9 +1,12 @@
 var showEarth = true;
+var timeout;
 
 drawSystem = function() {
 	time = time + time_rate;
 	
 	var ctx = game.canvas.getContext('2d');
+	ctx.lineWidth = 1;
+	ctx.font = "10px sans-serif";
 	
 	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 	
@@ -70,7 +73,7 @@ drawSystem = function() {
 		ctx.fillText(earth.name, x + game.scale2 * earth.radius, y + game.scale2 * earth.radius);
 	}
 	
-	setTimeout(drawSystem, 500);
+	timeout = setTimeout(drawSystem, 500);
 }
 
 function drawSystemClick(event)
@@ -110,10 +113,21 @@ function drawSystemKeyDown(event) {
 	else if (event.keyCode == 67) { // C
 		showEarth = !showEarth;
 	}
+	else if (event.keyCode == 8) { // Backspace
+		exitDrawSystem();
+	}
 }
 
 function enterDrawSystem() {
 	gamecanvas.addEventListener("mousedown", drawSystemClick, false);
 	window.addEventListener("keydown", drawSystemKeyDown, false);
 	drawSystem();
+}
+
+function exitDrawSystem() {
+	gamecanvas.removeEventListener("mousedown", drawSystemClick);
+	window.removeEventListener("keydown", drawSystemKeyDown);
+	clearTimeout(timeout);
+	
+	drawBaseMenu();
 }

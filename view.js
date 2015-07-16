@@ -13,12 +13,44 @@ function Game(canv) {
 	this.system = new SolarSystem();
 }
 
-Game.prototype.drawPlanetInfo = function() {
-	var ctx = this.canvas.getContext('2d');
-	ctx.font = "16px serif";
-	for (i = 0; i < this.system.planets.length; i++) {
-		label = this.system.planets[i].getKeyStats();
-		ctx.fillText(label, 10, 20*(i+1));
+drawBaseMenu = function() {
+	var ctx = game.canvas.getContext('2d');
+	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+
+	ctx.beginPath();
+  ctx.rect(10, 10, 150, 50);
+	ctx.rect(10, 60, 150, 50);
+  ctx.fillStyle = 'white';
+  ctx.fill();
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'black';
+  ctx.stroke();
+	
+	ctx.fillStyle="black";
+	ctx.font = "15px serif";
+	ctx.fillText("Display star system",15,40);
+	ctx.fillText("Display diagramatic",15,90);
+	ctx.font = "";
+	
+	gamecanvas.addEventListener("mousedown", baseMenuClick, false);
+}
+
+function baseMenuClick(event)
+{
+	var x = event.pageX - gamecanvas.offsetLeft;
+	var y = event.pageY - gamecanvas.offsetTop;
+	
+	if ((x > 10) && (x < 160) && (y > 10) && (y < 60))
+	{
+		// Display star system
+		game.canvas.removeEventListener("mousedown", baseMenuClick);
+		enterDrawSystem();
+	}
+	else if ((x > 10) && (x < 160) && (y > 60) && (y < 110))
+	{
+		// Display star system
+		game.canvas.removeEventListener("mousedown", baseMenuClick);
+		enterSystemDiagram();
 	}
 }
 
@@ -27,5 +59,6 @@ var game = new Game( gamecanvas );
 var time = 0;
 var time_rate = 1;
 
+drawBaseMenu();
 //enterSystemDiagram();
-enterDrawSystem();
+//enterDrawSystem();

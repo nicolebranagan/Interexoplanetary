@@ -1,11 +1,25 @@
 enterSystemDiagram = function() {
+	
 	window.addEventListener("mousedown", clickFieldBlank, false);
+	window.addEventListener("keydown", systemDiagramKeyDown, false);
 	systemDiagram();
+}
+
+exitSystemDiagram = function() {
+	gamecanvas.removeEventListener("mousedown", clickFieldBlank);
+	window.removeEventListener("keydown", systemDiagramKeyDown);
+	
+	drawBaseMenu();
 }
 
 systemDiagram = function() {
 	var ctx = game.canvas.getContext('2d');
 	var count = game.system.planets.length;
+	
+	ctx.lineWidth = 1;
+	ctx.font = "10px sans-serif";
+	
+	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 	
 	for (i = 0; i < count; i++) {
 		// draw path
@@ -56,7 +70,10 @@ systemDiagram = function() {
 clickFieldBlank = function(event) {
 	var x = event.pageX - gamecanvas.offsetLeft;
 	var y = event.pageY - gamecanvas.offsetTop;
-	
-	alert('Test of removable event listener');
-	window.removeEventListener("keydown", clickFieldBlank);
 } 
+
+function systemDiagramKeyDown(event) {
+	if (event.keyCode == 8) { // Backspace
+		exitSystemDiagram();
+	}
+}
