@@ -13,30 +13,49 @@ function Game(canv) {
 	this.system = new SolarSystem();
 }
 
+enterBaseMenu = function() {
+	gamecanvas.addEventListener("mousedown", baseMenuClick, false);
+	
+	menuObjects = new Array();
+	menuObjects.push( new Button( {
+		x: 10,
+		y: 10,
+		width: 200,
+		height: 100,
+		label: "Display diagrammatic",
+		clickFunction: function() {
+			game.canvas.removeEventListener("mousedown", baseMenuClick);
+			enterSystemDiagram();}
+	} ));
+	
+	
+	menuObjects.push( new Button( {
+		x: 10,
+		y: 120,
+		width: 200,
+		height: 100,
+		label: "Display solar system",
+		clickFunction: function() {
+			game.canvas.removeEventListener("mousedown", baseMenuClick);
+			enterDrawSystem();}
+	} ));
+	drawBaseMenu();
+}
+
 drawBaseMenu = function() {
 	var ctx = game.canvas.getContext('2d');
 	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
-
-	ctx.beginPath();
-  ctx.rect(10, 10, 150, 50);
-	ctx.rect(10, 60, 150, 50);
-  ctx.fillStyle = 'white';
-  ctx.fill();
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = 'black';
-  ctx.stroke();
 	
-	ctx.fillStyle="black";
-	ctx.font = "15px serif";
-	ctx.fillText("Display star system",15,40);
-	ctx.fillText("Display diagrammatic",15,90);
-	ctx.font = "";
+	for (i = 0; i < menuObjects.length; i++)
+		menuObjects[i].draw(ctx);
 	
-	gamecanvas.addEventListener("mousedown", baseMenuClick, false);
 }
 
 function baseMenuClick(event)
 {
+	for (i = 0; i < menuObjects.length; i++)
+	menuObjects[i].onClick(event);
+	
 	var x = event.pageX - gamecanvas.offsetLeft;
 	var y = event.pageY - gamecanvas.offsetTop;
 	
@@ -58,7 +77,6 @@ var gamecanvas = document.getElementById('gamecanvas');
 var game = new Game( gamecanvas );
 var time = 0;
 var time_rate = 1;
+var menuObjects;
 
-drawBaseMenu();
-//enterSystemDiagram();
-//enterDrawSystem();
+enterBaseMenu();

@@ -19,6 +19,7 @@ drawSystem = function() {
 	for (i = 0; i < game.system.planets.length; i++) {
 		// draw path
 		ctx.strokeStyle="white";
+		ctx.textAlign = "left";
 		
 		ctx.beginPath();
 		ctx.arc(game.width/2,game.height/2,game.scale*game.system.planets[i].sdist,0,2*Math.PI)
@@ -46,6 +47,26 @@ drawSystem = function() {
 		ctx.fillStyle="white";
 		ctx.fillText(game.system.planets[i].name, x + game.scale2 * game.system.planets[i].radius, y + game.scale2 * game.system.planets[i].radius);
 	}
+	
+	// Draw our colony
+		ctx.strokeStyle="grey";
+		ctx.beginPath();
+		ctx.arc(game.width/2,game.height/2,game.scale*50,0,2*Math.PI)
+		ctx.closePath();
+		ctx.stroke();
+		
+		x = (1 * 50 * game.scale) + game.width/2;
+		y = game.height/2;
+		
+		// draw planet
+		ctx.beginPath();
+		ctx.arc(x,y,20,0,2*Math.PI);
+		ctx.closePath();
+		ctx.fillStyle = "grey";
+		ctx.fill();
+		
+		ctx.fillStyle="white";
+		ctx.fillText("Waystation 2", x+25, y);
 	
 	if (showEarth) {
 		// Draw Earth for comparison
@@ -132,7 +153,7 @@ function exitDrawSystem() {
 	window.removeEventListener("keydown", drawSystemKeyDown);
 	clearTimeout(timeout);
 	
-	drawBaseMenu();
+	enterBaseMenu();
 	
 	var span = document.getElementById('infospan');
 	span.style.color = '#000000';

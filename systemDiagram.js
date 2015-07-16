@@ -9,7 +9,7 @@ exitSystemDiagram = function() {
 	gamecanvas.removeEventListener("mousedown", clickFieldBlank);
 	window.removeEventListener("keydown", systemDiagramKeyDown);
 	
-	drawBaseMenu();
+	enterBaseMenu();
 }
 
 systemDiagram = function() {
@@ -49,6 +49,7 @@ systemDiagram = function() {
 		ctx.fill();
 		
 		ctx.fillStyle="white";
+		ctx.textAlign = "left";
 		ctx.fillText(game.system.planets[i].name,x+12,y);
 	}
 	
@@ -81,3 +82,4 @@ function systemDiagramKeyDown(event) {
 		event.preventDefault();
 	}
 }
+
