@@ -55,7 +55,7 @@ function Planet(options) {
 	this.habitable = options.habitable;
 }
 
-Object.defineProperty(Planet.prototype,'mass', {
+Object.defineProperty(Planet.prototype, 'mass', {
 	get: function() {
 		// Find mass in units of the mass of earth
 		if (this.type == "Rocky")

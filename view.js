@@ -14,8 +14,6 @@ function Game(canv) {
 }
 
 enterBaseMenu = function() {
-	gamecanvas.addEventListener("mousedown", baseMenuClick, false);
-	
 	menuObjects = new Array();
 	menuObjects.push( new Button( {
 		x: 10,
@@ -28,7 +26,6 @@ enterBaseMenu = function() {
 			enterSystemDiagram();}
 	} ));
 	
-	
 	menuObjects.push( new Button( {
 		x: 10,
 		y: 120,
@@ -39,7 +36,9 @@ enterBaseMenu = function() {
 			game.canvas.removeEventListener("mousedown", baseMenuClick);
 			enterDrawSystem();}
 	} ));
+	
 	drawBaseMenu();
+	gamecanvas.addEventListener("mousedown", baseMenuClick, false);
 }
 
 drawBaseMenu = function() {
@@ -52,8 +51,8 @@ drawBaseMenu = function() {
 }
 
 function baseMenuClick(event) {
-	for (i = 0; i < menuObjects.length; i++)
-	menuObjects[i].onClick(event);
+	menuObjects.forEach( function(element, index, array) {element.onClick(event);} );
+
 	
 	var x = event.pageX - gamecanvas.offsetLeft;
 	var y = event.pageY - gamecanvas.offsetTop;

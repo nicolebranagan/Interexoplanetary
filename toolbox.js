@@ -22,6 +22,7 @@ Button.prototype.draw = function(context) {
 	context.fillStyle="black";
 	context.font = "15px serif";
 	context.textAlign = "center";
+	context.textBaseline = "middle";
 	context.fillText(this.label,this.x + (this.w/2),this.y + (this.h/2));
 	context.textAlign = "center";
 }

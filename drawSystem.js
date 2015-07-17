@@ -1,15 +1,16 @@
 var showEarth = true;
 var timeout;
+var dsObjects;
 
 drawSystem = function() {
 	time = time + time_rate;
 	
 	var ctx = game.canvas.getContext('2d');
-	ctx.lineWidth = 1;
-	ctx.font = "10px sans-serif";
-	
 	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 	
+	ctx.lineWidth = 1;
+	ctx.font = "10px sans-serif";
+		
 	ctx.beginPath();
 	ctx.arc(game.width/2,game.height/2,10,0,2*Math.PI);
 	ctx.closePath();
@@ -95,24 +96,28 @@ drawSystem = function() {
 	}
 	
 	timeout = setTimeout(drawSystem, 500);
+	
+	dsObjects.forEach(function(a,b,c) {a.draw(ctx);});
 }
 
 function drawSystemClick(event)
 {
-var x = event.pageX - gamecanvas.offsetLeft;
-var y = event.pageY - gamecanvas.offsetTop;
-
-for (i = 0; i < game.system.planets.length; i++) {
-	var xpla = Math.sin((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
-	var ypla = Math.cos((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
-	xpla = (xpla * game.system.planets[i].sdist * game.scale) + game.width/2;
-	ypla = (ypla * game.system.planets[i].sdist * game.scale) + game.height/2;
-	rpla = game.scale2 * game.system.planets[i].radius * 2;
+	dsObjects.forEach( function(element, index, array) {element.onClick(event);} );
 	
-	if ((Math.pow(x - xpla,2) + Math.pow(y - ypla,2)) <= rpla) {
-		alert(game.system.planets[i].getKeyStats());
-		break;
-	}
+	var x = event.pageX - gamecanvas.offsetLeft;
+	var y = event.pageY - gamecanvas.offsetTop;
+
+	for (i = 0; i < game.system.planets.length; i++) {
+		var xpla = Math.sin((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
+		var ypla = Math.cos((time/game.system.planets[i].speriod) * (2 * Math.PI) + game.system.planets[i].sphi);
+		xpla = (xpla * game.system.planets[i].sdist * game.scale) + game.width/2;
+		ypla = (ypla * game.system.planets[i].sdist * game.scale) + game.height/2;
+		rpla = game.scale2 * game.system.planets[i].radius * 2;
+		
+		if ((Math.pow(x - xpla,2) + Math.pow(y - ypla,2)) <= rpla) {
+			alert(game.system.planets[i].getKeyStats());
+			break;
+		}
 	}
 } 
 
@@ -143,9 +148,52 @@ function drawSystemKeyDown(event) {
 function enterDrawSystem() {
 	gamecanvas.addEventListener("mousedown", drawSystemClick, false);
 	window.addEventListener("keydown", drawSystemKeyDown, false);
-	drawSystem();
 	var span = document.getElementById('infospan');
 	span.style.color = '#FFFFFF';
+	
+	dsObjects = new Array();
+	dsObjects.push( new Button( {
+		x: 10,
+		y: 10,
+		width: 20,
+		height: 20,
+		label: "Z+",
+		clickFunction: function() {
+			game.scale = game.scale * 1.5;
+			game.scale2 = game.scale2 * 1.1;}
+	} ));	
+	
+	dsObjects.push( new Button( {
+		x: 30,
+		y: 10,
+		width: 20,
+		height: 20,
+		label: "Z-",
+		clickFunction: function() {
+			game.scale = game.scale / 1.5;
+			game.scale2 = game.scale2 / 1.1;}
+	} ));
+	
+	dsObjects.push( new Button( {
+		x: 690,
+		y: 10,
+		width: 90,
+		height: 20,
+		label: "Toggle Earth",
+		clickFunction: function() {
+			showEarth = !showEarth;}
+	} ));
+	
+	dsObjects.push( new Button( {
+		x: 10,
+		y: 570,
+		width: 130,
+		height: 20,
+		label: "Return to menu",
+		clickFunction: function() {
+					exitDrawSystem();}
+	} ));
+	drawSystem();
 }
 
 function exitDrawSystem() {

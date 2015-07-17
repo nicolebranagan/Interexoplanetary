@@ -1,4 +1,17 @@
+var sdObjects;
+
 enterSystemDiagram = function() {
+	sdObjects = new Array();
+	
+	sdObjects.push( new Button( {
+		x: 10,
+		y: 570,
+		width: 130,
+		height: 20,
+		label: "Return to menu",
+		clickFunction: function() {
+					exitSystemDiagram();}
+	} ));
 	
 	window.addEventListener("mousedown", clickFieldBlank, false);
 	window.addEventListener("keydown", systemDiagramKeyDown, false);
@@ -16,10 +29,10 @@ systemDiagram = function() {
 	var ctx = game.canvas.getContext('2d');
 	var count = game.system.planets.length;
 	
+	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
+	
 	ctx.lineWidth = 1;
 	ctx.font = "10px sans-serif";
-	
-	ctx.clearRect(0, 0, game.canvas.width, game.canvas.height);
 	
 	for (i = 0; i < count; i++) {
 		// draw path
@@ -69,12 +82,21 @@ systemDiagram = function() {
 	ctx.closePath();
 	ctx.fillStyle="gray"
 	ctx.fill();
+	
+	sdObjects.forEach(function(element, index, array) {element.draw(ctx);});
+
 }
 
 clickFieldBlank = function(event) {
+	sdUIonClick(event);
+	
 	var x = event.pageX - gamecanvas.offsetLeft;
 	var y = event.pageY - gamecanvas.offsetTop;
 } 
+
+sdUIonClick = function(event) {
+	sdObjects.forEach(function(element, index, array) {element.onClick(event);});
+}
 
 function systemDiagramKeyDown(event) {
 	if (event.keyCode == 8) { // Backspace
