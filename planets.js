@@ -59,7 +59,7 @@ Object.defineProperty(Planet.prototype, 'mass', {
 	get: function() {
 		// Find mass in units of the mass of earth
 		if (this.type == "Rocky")
-			return Math.round(Math.pow((this.radius)/(6370),3)*10)/10; // Same density of earth
+			return Math.round(Math.pow((this.radius)/(6370),3)*100)/100; // Same density of earth
 		else if (this.type == "Gas")
 			return Math.round(Math.pow((this.radius)/(6370),3)*0.2*10)/10; // Relative density of a gasy planet (mid jupiter-saturn)
 	} 

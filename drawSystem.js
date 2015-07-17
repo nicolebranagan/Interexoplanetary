@@ -175,6 +175,24 @@ function enterDrawSystem() {
 	} ));
 	
 	dsObjects.push( new Button( {
+		x: 590,
+		y: 10,
+		width: 90,
+		height: 20,
+		label: "Stop Time",
+		clickFunction: function() {
+			if (time_rate == 1) {
+				time_rate = 0;
+				this.label = "Start Time";
+			}
+			else {
+				time_rate = 1;
+				this.label = "Stop Time";
+			}
+		}
+	} ));
+	
+	dsObjects.push( new Button( {
 		x: 690,
 		y: 10,
 		width: 90,
