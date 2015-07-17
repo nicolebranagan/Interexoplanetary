@@ -55,12 +55,21 @@ function Planet(options) {
 	this.habitable = options.habitable;
 }
 
+Planet.prototype.getMass = function() {
+	// Find mass in units of M⊕
+	if (this.type = "Rocky")
+		return Math.round(Math.pow((this.radius)/(6370),3)*10)/10; // Same density of earth
+	else if (this.type = "Gas")
+		return Math.round(Math.pow((this.radius)/(6370),3)*0.2*10)/10; // Relative density of a gasy planet (mid jupiter-saturn)
+}
+
 Planet.prototype.getKeyStats = function() {
 	return (this.type + " Planet " + this.name +
 		": Dist: " + this.sdist + "AU" +
 		", Period: " + this.speriod + " centicycle" +
 		", Rad: " + this.radius + "km" +
-		", Moons: " + this.moons);
+		", Moons: " + this.moons + 
+		", Mass: " + this.getMass() + "M⊕");
 }
 
 // Define function for obtaining planets
